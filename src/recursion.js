@@ -108,6 +108,7 @@ console.log(range(1, 9));
 // 8^2 = 8 x 8 = 64. Here, 8 is the base and 2 is the exponent.
 // exponent(4,3); // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
+
 var exponent = function (base, exp) {
     if (exp === 0) {
         return 1;
@@ -136,11 +137,35 @@ var powerOfTwo = function (n) {
 };
 
 // 9. Write a function that reverses a string.
+
 var reverse = function (string) {
+    if (str === "")
+        return "";
+    else
+        return reverse(str.substr(1)) + str.charAt(0);
 };
 
+reverse("hello");
+
 // 10. Write a function that determines if a string is a palindrome.
+
 var palindrome = function (string) {
+    if (string.length <= 1) {
+        return true;
+    }
+
+    let [firstLetter] = string;
+    let lastLetter = string[string.length - 1];
+
+    if (firstLetter === lastLetter) {
+        let stringWithoutFirstAndLastLetters = string.substring(
+            1,
+            string.length - 1
+        );
+        return palindrome(stringWithoutFirstAndLastLetters);
+    } else {
+        return false;
+    }
 };
 
 // 11. Write a function that returns the remainder of x divided by y without using the
@@ -148,17 +173,77 @@ var palindrome = function (string) {
 // modulo(5,2) // 1
 // modulo(17,5) // 2
 // modulo(22,6) // 4
-var modulo = function (x, y) {
-};
+
+//var modulo = function (x, y) {
+//};
+
+function modulo(num1, num2) {
+    var sign = num1 < 0 ? -1 : 1;
+    var dividend = Math.abs(num1);
+    var divisor = Math.abs(num2);
+
+    if (dividend === 0) {
+        return 0;
+    }
+    if (dividend === 0 || isNaN(dividend) || isNaN(divisor)) {
+        return NaN;
+    }
+    if (dividend < divisor) {
+        return sign * dividend;
+    }
+
+    var counter = dividend;
+    while (counter >= divisor) {
+        counter = counter - divisor;
+    }
+    return sign * counter;
+}
+
+console.log(25 % 4, modulo(25, 4));
 
 // 12. Write a function that multiplies two numbers without using the * operator or
 // Math methods.
+
 var multiply = function (x, y) {
+    if (y == 0) {
+        return 0;
+    }
+
+    /* Add x one by one */
+    if (y > 0) {
+        return (x + multiply(x, y - 1));
+    }
+
+    /* the case where y is negative */
+    if (y < 0) {
+        return -multiply(x, -y);
+    }
+
+    return -1;
 };
 
 // 13. Write a function that divides two numbers without using the / operator or
 // Math methods to arrive at an approximate quotient (ignore decimal endings).
+
 var divide = function (x, y) {
+
+    let sign = ((dividend < 0) ^ (divisor < 0)) ? -1 : 1;
+
+    // Update both divisor and 
+    // dividend positive
+
+    let dividend = Math.abs(dividend);
+    let divisor = Math.abs(divisor);
+
+    // Initialize the quotient 
+    let quotient = 0;
+
+    while (dividend >= divisor) {
+        dividend -= divisor;
+        ++quotient;
+    }
+
+    return sign * quotient; 
 };
 
 // 14. Find the greatest common divisor (gcd) of two positive numbers. The GCD of two
@@ -166,14 +251,44 @@ var divide = function (x, y) {
 // gcd(4,36); // 4
 // http://www.cse.wustl.edu/~kjg/cse131/Notes/Recursion/recursion.html
 // https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/the-euclidean-algorithm
-var gcd = function (x, y) {
+
+var gcd = function (a, b) {
+    if (!b) {
+        return a;
+    }
+
+    return gcd(b, a % b);
 };
+
+console.log(gcd(2154, 458));
 
 // 15. Write a function that compares each character of two strings and returns true if
 // both are identical.
 // compareStr('house', 'houses') // false
 // compareStr('tomato', 'tomato') // true
+
 var compareStr = function (str1, str2) {
+    let n1 = str1.length();
+    let n2 = str2.length();
+
+    // If length of both strings is not same,  
+    // then they cannot be Permutation  
+    if (n1 != n2)
+        return false;
+    let ch1 = [str1];
+    let ch2 = [str2];
+
+    // Sort both strings  
+    Arrays.sort(ch1);
+    Arrays.sort(ch2);
+
+    // Compare sorted strings
+    
+    for (int i = 0; i < n1; i++)
+    if (ch1[i] != ch2[i]) {
+        return false;
+    }
+    return true;  
 };
 
 // 16. Write a function that accepts a string and creates an array where each letter
@@ -182,13 +297,46 @@ var createArray = function (str) {
 };
 
 // 17. Reverse the order of an array
-var reverseArr = function (array) {
-};
+
+//var reverseArr = function (array) {
+//};
+
+//function reverseArray(toBeReversed) {
+//    var reversed = [];
+
+//    function reverser(toBeReversed) {
+//        if (toBeReversed.length !== 0) {
+//            reversed.push(toBeReversed.pop());
+//            reverser(toBeReversed);
+//        }
+//    }
+
+//    reverser(toBeReversed);
+//    return reversed;
+//}
+
+let reverseArray = (arr, n) => {
+    //If the length is 0 
+    //then return an empty array
+
+    if (n == 0) {
+        return [];
+    }
+
+    //Call the function recursively with one index less and so on.
+    return [arr[n - 1]].concat(reverseArray(arr, --n));
+}
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
+
 var buildList = function (value, length) {
+    if (length === 0) {
+        return [];
+    }
+
+    return [num].concat(buildList(value, length - 1));
 };
 
 // 19. Implement FizzBuzz. Given integer n, return an array of the string representations of 1 to n.
@@ -196,14 +344,61 @@ var buildList = function (value, length) {
 // For multiples of five, output 'Buzz' instead of the number.
 // For numbers which are multiples of both three and five, output “FizzBuzz” instead of the number.
 // fizzBuzz(5) // ['1','2','Fizz','4','Buzz']
-var fizzBuzz = function (n) {
+
+//var fizzBuzz = function (n) {
+//};
+
+function fizzBuzz(n) {
+    function fizzBuzzRecursive(n) {
+        //create results array
+        //create base case for when n === 1
+        //recurse and push value to array
+        var results = [];
+        if (n === 1) {
+            return '1';
+        } else {
+            if (n % 3 === 0 && n % 5 === 0) {
+                results.push('FizzBuzz');
+            } else if (n % 5 === 0) {
+                results.push('Buzz');
+            } else if (n % 3 === 0) {
+                results.push('Fizz');
+            } else {
+                results.push('' + n);
+            }
+            return results.concat(fizzBuzzRecursive(n - 1));
+        }
+    }
+
+    return fizzBuzzRecursive(n).reverse();
 };
+
+console.log(fizzBuzz(15));
 
 // 20. Count the occurence of a value in a list.
 // countOccurrence([2,7,4,4,1,4], 4) // 3
 // countOccurrence([2,'banana',4,4,1,'banana'], 'banana') // 2
-var countOccurrence = function (array, value) {
-};
+//var countOccurrence = function (array, value) {
+//};
+
+function foo(arr) {
+    let a = [],
+        b = [],
+        prev;
+
+    arr.sort();
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] !== prev) {
+            a.push(arr[i]);
+            b.push(1);
+        } else {
+            b[b.length - 1]++;
+        }
+        prev = arr[i];
+    }
+
+    return [a, b];
+}
 
 // 21. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
